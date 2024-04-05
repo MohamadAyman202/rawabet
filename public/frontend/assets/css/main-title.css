@@ -1,0 +1,19 @@
+:root {
+    --main-title-color: #0d6efd;
+}
+
+/* Start Main title */
+#app main section .container .row .main-head {
+    border-top: 1px solid var(--main-title-color) !important;
+    border-bottom: 1px solid var(--main-title-color) !important;
+}
+#app main section .container .row .main-head .main-header {
+    font-size: 50px !important;
+    color: var(--main-title-color);
+    margin: 0 !important;
+}
+/* End Main Title */
+#app main section .container .row .main-img,
+#app main section .container .row .main-img img {
+    height: 100% !important;
+}

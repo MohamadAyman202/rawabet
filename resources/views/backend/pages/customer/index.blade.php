@@ -595,4 +595,56 @@
     <script src="{{ URL::asset('backend/assets/js/modal.js') }}"></script>
 
     <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
+    <script type="text/javascript">
+        $(function() {
+            proccessData();
+            $("select[name='country_id']").on("change", function() {
+                proccessData();
+            });
+        });
+
+        function proccessData() {
+            const country_id = $("select[name='country_id']").val();
+            const state = $("select[name='state_id']");
+            if (country_id) {
+                $.ajax({
+                    type: "GET",
+                    url: `${window.location.origin}/admin/state_data/${country_id}`,
+                    success: function(response) {
+                        state.children().remove();
+                        state.append(`
+                <option selected disabled>{!! __('web.state') !!}</option>
+            `);
+                        console.log(window.location.origin);
+                        $.each(response.data, function(i, ele) {
+                            state.append(`
+                    <option value="${ele.id}">${ele.name}</option>
+                `);
+                        });
+
+                        state.on("change", function() {
+                            const state_id = $(this).val();
+                            const city = $("select[name='city_id']");
+                            $.ajax({
+                                type: "GET",
+                                url: `${window.location.origin}/admin/city_data/${country_id}/${state_id}`,
+                                success: function(response) {
+                                    city.children().remove();
+                                    city.append(`
+                            <option selected disabled>{!! __('web.city') !!}</option>
+                        `);
+
+                                    $.each(response.data, function(i, ele) {
+                                        city.append(`
+                                <option value="${ele.id}">${ele.name}</option>
+                            `);
+                                    });
+                                },
+                            });
+                        });
+                    },
+                });
+            }
+        }
+    </script>
 @endsection

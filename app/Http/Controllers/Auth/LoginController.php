@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\LastLogin;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Trait\SystemInfoHelper;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -27,7 +28,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
-            $attach = ['email' => $request->input('email'), 'password' => $request->input('password'), 'status' => 'active'];
+            $attach = ['email' => $request->input('email'), 'password' => $request->input('password'), 'status' => 'active', 'remember_token' => null];
             if (Auth::guard('web')->attempt($attach)) {
                 $logined =  LastLogin::query()->create([
                     'user_id' => auth()->user()->id,
@@ -36,7 +37,10 @@ class LoginController extends Controller
                     'operating_system' => self::get_os(),
                     'device' => self::get_device(),
                 ]);
-                if ($logined) return redirect(RouteServiceProvider::DASHBOARD);
+                if ($logined){
+                    User::findOrFail(auth()->user()->id)->update(['remember_token' => \Str::random(8)]);
+                    return redirect(RouteServiceProvider::DASHBOARD);
+                } 
             }
             session()->flash('error', 'The Account Not Found!');
             return  redirect()->back();
@@ -44,8 +48,10 @@ class LoginController extends Controller
         return view('frontend.auth.login');
     }
 
-    public function logout(Request $request) {
-         Auth::logout();
+    public function logout(Request $request)
+    {
+        User::findOrFail(auth()->user()->id)->update(['remember_token' => null]);
+        Auth::logout();
         return redirect()->back();
     }
 }

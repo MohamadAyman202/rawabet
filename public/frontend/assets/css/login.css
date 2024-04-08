@@ -1,0 +1,6 @@
+section.login-section {
+    height: calc(100vh - 316px) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

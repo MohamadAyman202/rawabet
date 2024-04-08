@@ -95,6 +95,7 @@
 .footer {
     background-color: var(--main-title-color);
 }
+
 /* End Footer */
 @media only screen and (max-width: 600px) {
     .box-slider {

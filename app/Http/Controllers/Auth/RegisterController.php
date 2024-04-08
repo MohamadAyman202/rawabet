@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\User;
+use App\Trait\FunctionsTrait;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    use FunctionsTrait;
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -20,53 +25,56 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('guest');
+        if ($request->isMethod("post")) {
+            try {
+                $data = $this->data($request);
+                if ($request->hasFile('photo')) {
+                    $image_name = time() . '.' . $request->file('photo')->extension();
+                    $data['photo'] = "uploads/customer/$image_name";
+                }
+                $status = User::query()->create($data);
+
+                if ($status) {
+                    if ($request->hasFile('photo')) {
+                        $request->file('photo')->move(public_path("uploads/customer/"), $image_name);
+                    }
+                    session()->flash('success', "Successfully Created Customer");
+                    return  redirect()->back();
+                }
+                session()->flash('error', "Not Successfully Created Customer");
+                return  redirect()->back();
+            } catch (\Exception $ex) {
+                return redirect()->back()->withErrors(['error' => $ex->getMessage()]);
+            }
+        } else {
+            $customers = User::query()->orderBy('created_at', 'DESC')->paginate(self::count_data());
+            $countries = Cache::rememberForever('countries', function () {
+                return Country::query()->orderBy('created_at', 'DESC')->get();
+            });
+            return view("frontend.auth.register", compact("customers", "countries"));
+        }
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function data($request = null): array
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        $data = $request->except('_token', 'type_account', 'photo', 'password_confirmation');
+        $data['role_name'] = $request->input('type_account');
+        // $data['admin_id'] = auth()->user()->id;
+        $data['password'] = Hash::make($request->input('password'));
+        return $data;
+    }
+    public function state_data($id)
+    {
+        $country = Country::query()->findOrFail($id)->states;
+        return response()->json(['data' => $country, 'status' => 200, 'msg' => 'Successfully Get State']);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
+    public function city_data($country_id, $state_id)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $city = Country::query()->findOrFail($country_id)
+            ->states->where('id', $state_id)->first()->cities;
+        return response()->json(['data' => $city, 'status' => 200, 'msg' => 'Successfully Get Cities']);
     }
 }

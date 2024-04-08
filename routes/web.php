@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -29,6 +30,11 @@ Route::group(
         Route::middleware('guest')->group(function () {
 
             Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('login');
+            Route::match(['get', 'post'], 'register', [RegisterController::class, 'index'])->name('register');
+            Route::controller(RegisterController::class)->group(function () {
+                Route::get('customer/city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
+                Route::get('customer/state_data/{id}',  'state_data')->name('state_data');
+            });
 
             Route::controller(HomeController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -42,7 +48,7 @@ Route::group(
                 Route::get('subscriptions', 'subscriptions')->name('subscriptions');
                 Route::get('category', 'categories')->name('categories');
                 Route::get('sub_category/{slug}', 'sub_categories')->name('sub_categories');
-                
+
                 // Start Route Products
                 Route::get("product_details/{slug}", 'product_details')->name('product_details');
                 Route::get('products/{slug}', 'products')->name('products');

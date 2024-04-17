@@ -7,11 +7,12 @@ use App\Trait\FunctionsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use HasFactory, HasTranslations, FunctionsTrait;
+    use HasFactory, HasTranslations, FunctionsTrait, Notifiable;
     protected $guarded = [];
     public $translatable = ['title', 'title_en', 'meta_description', 'meta_description_en', 'description', 'description_en'];
 

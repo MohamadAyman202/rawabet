@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSubCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Services\SystemServices;
 use Illuminate\Http\Request;
-use App\Trait\SystemTrait;
 use Illuminate\Validation\ValidationException;
 
 class SubCategoryController extends Controller
@@ -38,17 +39,8 @@ class SubCategoryController extends Controller
      * Store a newly created resource in storage.
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(CreateSubCategoryRequest $request)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-            'description'       => ['required', 'string', 'max:100'],
-            'description_en'    => ['required', 'string', 'max:100'],
-            'photo'             => ['required', 'image', 'mimes:jpg,jpeg,svg,png'],
-            'category_id'       => ['required']
-        ];
-        $this->validate($request, $roles);
         $data = $this->data($request);
         $data['slug'] = str()->slug($request->title_en);
         return $this->systemServices->createSystem(SubCategory::query(), $data, 'SubCategory', null, $request);
@@ -73,17 +65,8 @@ class SubCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $slug)
+    public function update(UpdateCategoryRequest $request, $slug)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-            'description'       => ['required', 'string', 'max:100'],
-            'description_en'    => ['required', 'string', 'max:100'],
-            'photo'             => ['nullable', 'image', 'mimes:jpg,jpeg,svg,png'],
-            'category_id'       => ['required']
-        ];
-        $this->validate($request, $roles);
         $data = $this->data($request);
         return $this->systemServices->editSystem(SubCategory::query(), $slug, $data, 'SubCategory', null, $request);
     }

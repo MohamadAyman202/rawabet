@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CustomerController;
@@ -72,6 +73,10 @@ Route::group(
                 Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
                 Route::get('state_data/{id}',  'state_data')->name('state_data');
             });
+
+            // Get Data API
+
+            Route::get('notifications', NotificationController::class)->name('notifications');
         });
     }
 );

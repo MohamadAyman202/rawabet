@@ -190,13 +190,9 @@
                                                                 </div>
 
                                                                 <div class="col-12 col-lg-12 col-md-12 col-xl-12">
-                                                                    <div class="mb-3">
-                                                                        <label for=""
-                                                                            class="form-label">{{ __('web.status') }}</label>
+                                                                    <div class="my-3">
                                                                         <select class="form-control" name="status"
                                                                             id="status">
-                                                                            <option selected disabled>
-                                                                                {{ __('web.select_status') }}</option>
                                                                             <option value="active"
                                                                                 {{ $category->status == 'active' ? 'selected' : '' }}>
                                                                                 {{ __('web.active') }}</option>
@@ -342,10 +338,8 @@
                             </div>
 
                             <div class="col-12 col-lg-12 col-md-12 col-xl-12">
-                                <div class="mb-3">
-                                    <label for="" class="form-label">{{ __('web.status') }}</label>
+                                <div class="my-3">
                                     <select class="form-control" name="status" id="status">
-                                        <option selected disabled>{{ __('web.select_status') }}</option>
                                         <option value="active" {{ old('status' == 'active' ? 'selected' : '') }}>
                                             {{ __('web.active') }}</option>
                                         <option value="inactive" {{ old('status' == 'inactive' ? 'selected' : '') }}>

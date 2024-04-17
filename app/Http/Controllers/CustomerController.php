@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Country;
 use App\Models\User;
 use App\Trait\FunctionsTrait;
@@ -35,20 +37,20 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateCustomerRequest $request)
     {
         try {
             $data = $this->data($request);
+
             if ($request->hasFile('photo')) {
                 $image_name = time() . '.' . $request->file('photo')->extension();
                 $data['photo'] = "uploads/customer/$image_name";
+                $request->file('photo')->move(public_path("uploads/customer/"), $image_name);
             }
+
             $status = User::query()->create($data);
 
             if ($status) {
-                if ($request->hasFile('photo')) {
-                    $request->file('photo')->move(public_path("uploads/customer/"), $image_name);
-                }
                 session()->flash('success', "Successfully Created Customer");
                 return  redirect()->back();
             }
@@ -78,7 +80,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCustomerRequest $request, string $id)
     {
         try {
             $customer = User::query()->findOrFail($id);
@@ -88,14 +90,12 @@ class CustomerController extends Controller
                 if ($request->hasFile('photo')) {
                     $image_name = time() . '.' . $request->file('photo')->extension();
                     $data['photo'] = "uploads/customer/$image_name";
+                    $request->file('photo')->move(public_path("uploads/customer/"), $image_name);
                 }
 
                 $status = $customer->fill($data)->save();
 
                 if ($status) {
-                    if ($request->hasFile('photo')) {
-                        $request->file('photo')->move(public_path("uploads/customer/"), $image_name);
-                    }
                     session()->flash('success', "Successfully Updated Customer");
                     return  redirect()->back();
                 }
@@ -142,5 +142,18 @@ class CustomerController extends Controller
         $data['admin_id'] = auth()->user()->id;
         $data['password'] = Hash::make($request->input('password'));
         return $data;
+    }
+
+    public function state_data($id)
+    {
+        $country = Country::query()->findOrFail($id)->states;
+        return response()->json(['data' => $country, 'status' => 200, 'msg' => 'Successfully Get State']);
+    }
+
+    public function city_data($country_id, $state_id)
+    {
+        $city = Country::query()->findOrFail($country_id)
+            ->states->where('id', $state_id)->first()->cities;
+        return response()->json(['data' => $city, 'status' => 200, 'msg' => 'Successfully Get Cities']);
     }
 }

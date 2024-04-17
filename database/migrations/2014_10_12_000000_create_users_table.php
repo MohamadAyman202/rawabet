@@ -25,6 +25,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->foreignId('admin_id')->nullable()->constrained();
+
             $table->rememberToken();
             $table->timestamps();
         });

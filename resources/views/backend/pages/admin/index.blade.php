@@ -184,7 +184,7 @@
                                                                         <label
                                                                             class="form-label">{{ __('web.confirm_password') }}</label>
                                                                         <input
-                                                                            class="form-control @error('confirm_password') is-invalid @enderror"
+                                                                            class="form-control @error('password') is-invalid @enderror"
                                                                             autocomplete="new-password" type="password"
                                                                             name="confirm_password"
                                                                             placeholder="{{ __('web.confirm_password') }}" />
@@ -237,7 +237,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.state') }}</label>
                                                                         <select
-                                                                            class="form-control  @error('state') is-invalid @enderror"
+                                                                            class="form-control  @error('state_id') is-invalid @enderror"
                                                                             name="state_id">
                                                                             <option selected disabled>{{ __('web.state') }}
                                                                             </option>
@@ -283,7 +283,7 @@
                                                                 <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                                                     <div class="mt-3">
                                                                         <label for=""
-                                                                            class="form-label">{{ __('web.type_account') }}</label>
+                                                                            class="form-label @error('type_account') is-invalid @enderror">{{ __('web.type_account') }}</label>
                                                                         {!! Form::select('roles[]', $roles, [], ['class' => 'form-control']) !!}
                                                                         @error('type_account')
                                                                             <small class="text-danger">{{ $message }}</small>
@@ -431,7 +431,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label class="form-label">{{ __('web.confirm_password') }}</label>
-                                    <input class="form-control @error('confirm_password') is-invalid @enderror"
+                                    <input class="form-control @error('password') is-invalid @enderror"
                                         autocomplete="new-password" type="password" name="confirm_password"
                                         value="{{ old('confirm_password') }}"
                                         placeholder="{{ __('web.confirm_password') }}" />
@@ -475,7 +475,8 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.state') }}</label>
-                                    <select class="form-control  @error('state') is-invalid @enderror" name="state_id">
+                                    <select class="form-control  @error('state_id') is-invalid @enderror"
+                                        name="state_id">
                                         <option selected disabled>{{ __('web.state') }}</option>
                                     </select>
                                     @error('state_id')

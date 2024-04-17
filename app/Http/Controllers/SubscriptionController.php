@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSubscriptionRequest;
+use App\Http\Requests\UpdateSubscriptionRequest;
 use App\Models\Subscription;
 use App\Services\SystemServices;
 use Illuminate\Http\Request;
@@ -33,7 +35,7 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateSubscriptionRequest $request)
     {
         $data = $this->data($request);
         $data['slug'] = str()->slug($request->input('title'));
@@ -59,7 +61,7 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $slug)
+    public function update(UpdateSubscriptionRequest $request, $slug)
     {
         $data = $this->data($request);
         return $this->systemServices->editSystem(Subscription::query(), $slug, $data, 'Subscription', null, $request);

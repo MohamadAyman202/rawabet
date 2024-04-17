@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
 use App\Models\Country;
 use App\Trait\FunctionsTrait;
@@ -25,7 +27,7 @@ class AdminController extends Controller
         return view('backend.pages.admin.index', compact('admins', 'countries', 'roles'));
     }
 
-    public function store(Request $request)
+    public function store(CreateAdminRequest $request)
     {
         try {
             $data = $this->data($request);
@@ -52,7 +54,7 @@ class AdminController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateAdminRequest $request, string $id)
     {
         try {
             $admin = Admin::query()->findOrFail($id);

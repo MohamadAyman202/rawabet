@@ -92,7 +92,6 @@ class User extends Authenticatable
     {
         return self::CheckWorkingStatus($work_status);
     }
-
     // protected static function booted() {
     //     static::addGlobalScope(new ActiveDataScope);
     // }

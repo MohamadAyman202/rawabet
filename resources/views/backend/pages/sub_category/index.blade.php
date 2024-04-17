@@ -65,7 +65,7 @@
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
                     @include('inc.message')
-                    <a class="modal-effect btn btn-primary btn-md"  data-toggle="modal"
+                    <a class="modal-effect btn btn-primary btn-md" data-toggle="modal"
                         href="#modaldemo8">{{ __('web.create_sub_category') }}</a>
                 </div>
                 <div class="card-body">
@@ -102,12 +102,10 @@
                                                 {{ $sub_category->Fun($sub_category->updated_at) }}
                                             </td>
                                             <td>
-                                                <a class="modal-effect btn btn-primary btn-sm"
-                                                    data-toggle="modal"
+                                                <a class="modal-effect btn btn-primary btn-sm" data-toggle="modal"
                                                     href="#edit{{ $sub_category->slug }}">{{ __('web.edit') }}</a>
 
-                                                <a class="modal-effect btn btn-danger btn-sm"
-                                                    data-toggle="modal"
+                                                <a class="modal-effect btn btn-danger btn-sm" data-toggle="modal"
                                                     href="#delete{{ $sub_category->slug }}">{{ __('web.delete') }}</a>
                                             </td>
                                         </tr>
@@ -196,11 +194,9 @@
                                                                 <div class="col-12 col-lg-6 col-md-6 col-xl-6 mt-3">
                                                                     <div class="mb-3">
                                                                         <label for=""
-                                                                            class="form-label">{{ __('web.status') }}</label>
+                                                                            class="form-label">{{ __('web.select_status') }}</label>
                                                                         <select class="form-control" name="status"
                                                                             id="status">
-                                                                            <option selected disabled>
-                                                                                {{ __('web.select_status') }}</option>
                                                                             <option value="active"
                                                                                 {{ $sub_category->status == 'active' ? 'selected' : '' }}>
                                                                                 {{ __('web.active') }}</option>
@@ -367,9 +363,8 @@
 
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6 mt-3">
                                 <div class="mb-3">
-                                    <label for="" class="form-label">{{ __('web.status') }}</label>
+                                    <label for="" class="form-label">{{ __('web.select_status') }}</label>
                                     <select class="form-control" name="status" id="status">
-                                        <option selected disabled>{{ __('web.select_status') }}</option>
                                         <option value="active" {{ old('status' == 'active' ? 'selected' : '') }}>
                                             {{ __('web.active') }}</option>
                                         <option value="inactive" {{ old('status' == 'inactive' ? 'selected' : '') }}>
@@ -381,7 +376,8 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6 mt-3">
                                 <div class="mb-3">
                                     <label for="" class="form-label">{{ __('web.category') }}</label>
-                                    <select class="form-control" name="category_id" id="category_id">
+                                    <select class="form-control  @error('category_id') is-invalid @enderror"
+                                        name="category_id" id="category_id">
                                         <option selected disabled>{{ __('web.select_category') }}</option>
                                         @isset($data['categories'])
                                             @foreach ($data['categories'] as $category)
@@ -389,6 +385,9 @@
                                             @endforeach
                                         @endisset
                                     </select>
+                                    @error('category_id')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Services\SystemServices;
 use Illuminate\Http\Request;
@@ -35,17 +37,8 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(CreateCategoryRequest $request)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-            'description'       => ['required', 'string', 'max:100'],
-            'description_en'    => ['required', 'string', 'max:100'],
-            'photo'             => ['required', 'image', 'mimes:jpg,jpeg,svg,png']
-        ];
-
-        $this->validate($request, $roles);
         $data = $this->data($request);
         $data['slug'] = str()->slug($request->title_en);
         return $this->systemServices->createSystem(Category::query(), $data, 'category', null, $request);
@@ -71,16 +64,8 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      * @throws ValidationException
      */
-    public function update(Request $request, $slug)
+    public function update(UpdateCategoryRequest $request, $slug)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-            'description'       => ['required', 'string', 'max:100'],
-            'description_en'    => ['required', 'string', 'max:100'],
-            'photo'             => ['nullable', 'image', 'mimes:jpg,jpeg,svg,png']
-        ];
-        $this->validate($request, $roles);
         $data = $this->data($request);
         return $this->systemServices->editSystem(Category::query(), $slug, $data, 'category', null, $request);
     }

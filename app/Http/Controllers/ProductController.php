@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\MeasuringUnit;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\User;
-use App\Services\SystemServices;
+use App\Services\ProdcutServices;
 use App\Trait\FunctionsTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -16,16 +18,17 @@ use Illuminate\Support\Facades\Cache;
 class ProductController extends Controller
 {
     use FunctionsTrait;
-    private $systemServices;
-    function __construct(SystemServices $systemServices)
+    private $ProdcutServices;
+    function __construct(ProdcutServices $ProdcutServices)
     {
-        $this->systemServices = $systemServices;
+        $this->ProdcutServices = $ProdcutServices;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        return User::find(954)->unreadNotifications;
         $products = Product::query()->paginate(self::count_data());
         return view('backend.pages.products.index', compact('products'));
     }
@@ -39,19 +42,17 @@ class ProductController extends Controller
         $data['categories'] = Cache::remember('categories', 180, function () {
             return Category::query()->orderBy('created_at', 'DESC')->get();
         });
-
-
         return view('backend.pages.products.create', compact('data'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
         $data = $this->data($request);
         $data['slug'] = $request->input('title');
-        return $this->systemServices->createSystem(Product::query(), $data, 'Product', null, $request);
+        return $this->ProdcutServices->create($data, $request);
     }
 
     /**
@@ -76,10 +77,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $slug)
+    public function update(UpdateProductRequest $request, $slug)
     {
         $data = $this->data($request);
-        return $this->systemServices->editSystem(Product::query(), $slug, $data, 'Product', "admin.products.index", $request);
+        return $this->ProdcutServices->edit($slug, $data, $request);
     }
 
     /**
@@ -87,7 +88,7 @@ class ProductController extends Controller
      */
     public function destroy($slug)
     {
-        return $this->systemServices->deleteSystem(Product::query(), $slug, 'Product');
+        return $this->ProdcutServices->delete($slug, 'Product');
     }
 
     public function data($request): array
@@ -104,7 +105,6 @@ class ProductController extends Controller
     public function get_sub_category($id)
     {
         $data = Category::query()->where('id', $id)->first()->sub_categories;
-
         return response()->json(['data' => $data, 'msg' => 'Successfully Get Data', 'status' => 200]);
     }
 }

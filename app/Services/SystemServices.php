@@ -35,7 +35,7 @@ class SystemServices
             $status = $model->create($data);
 
             if ($status) {
-                self::event_notifications($status);
+                // self::event_notifications($status);
                 session()->flash('success', "Successfully Created $msg");
                 return  $route ? redirect()->route($route) : redirect()->back();
             }
@@ -110,10 +110,9 @@ class SystemServices
                 if ($status) {
                     session()->flash('success', "Successfully Deleted $msg");
                     return redirect()->back();
-                } else {
-                    session()->flash('error', "Not Successfully Deleted $msg");
-                    return redirect()->back();
                 }
+                session()->flash('error', "Not Successfully Deleted $msg");
+                return redirect()->back();
             }
             session()->flash('error', "Not Found Data");
             return redirect()->back();
@@ -122,8 +121,8 @@ class SystemServices
         }
     }
 
-    public static function event_notifications($data)
-    {
-        if (Route::currentRouteName() == 'product_store') return new SendNotifications($data);
-    }
+    // public static function event_notifications($data)
+    // {
+    //     if (Route::currentRouteName() == 'product_store') return new SendNotifications($data);
+    // }
 }

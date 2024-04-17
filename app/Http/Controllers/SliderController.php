@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\CreateSliderRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\UpdateSliderRequest;
 use App\Models\Slider;
 use App\Services\SystemServices;
 use Illuminate\Http\Request;
@@ -35,7 +39,7 @@ class SliderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateSliderRequest $request)
     {
         try {
             $data = $this->data($request);
@@ -77,7 +81,7 @@ class SliderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSliderRequest $request, string $id)
     {
         try {
             $slider = Slider::query()->findOrFail($id);

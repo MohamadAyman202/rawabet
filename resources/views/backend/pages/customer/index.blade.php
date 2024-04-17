@@ -184,7 +184,7 @@
                                                                         <label
                                                                             class="form-label">{{ __('web.confirm_password') }}</label>
                                                                         <input
-                                                                            class="form-control @error('confirm_password') is-invalid @enderror"
+                                                                            class="form-control @error('password') is-invalid @enderror"
                                                                             autocomplete="new-password" type="password"
                                                                             name="confirm_password"
                                                                             placeholder="{{ __('web.confirm_password') }}" />
@@ -213,7 +213,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.country') }}</label>
                                                                         <select
-                                                                            class="form-control select2 @error('country_id') is-invalid @enderror"
+                                                                            class="form-control  @error('country_id') is-invalid @enderror"
                                                                             name="country_id">
                                                                             <option selected disabled>{{ __('web.country') }}
                                                                             </option>
@@ -238,7 +238,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.state') }}</label>
                                                                         <select
-                                                                            class="form-control select2 @error('state') is-invalid @enderror"
+                                                                            class="form-control  @error('state_id') is-invalid @enderror"
                                                                             name="state_id">
                                                                             <option selected disabled>{{ __('web.state') }}
                                                                             </option>
@@ -254,7 +254,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.city') }}</label>
                                                                         <select
-                                                                            class="form-control select2 @error('city_id') is-invalid @enderror"
+                                                                            class="form-control  @error('city_id') is-invalid @enderror"
                                                                             name="city_id">
                                                                             <option selected disabled>{{ __('web.city') }}
                                                                             </option>
@@ -286,7 +286,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.type_account') }}</label>
                                                                         <select
-                                                                            class="form-control select2 @error('type_account') is-invalid @enderror"
+                                                                            class="form-control  @error('type_account') is-invalid @enderror"
                                                                             name="type_account">
                                                                             <option selected disabled>
                                                                                 {{ __('web.type_account') }}</option>
@@ -308,7 +308,7 @@
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.status') }}</label>
                                                                         <select
-                                                                            class="form-control select2 @error('status') is-invalid @enderror"
+                                                                            class="form-control  @error('status') is-invalid @enderror"
                                                                             name="status">
                                                                             <option selected disabled>{{ __('web.status') }}
                                                                             </option>
@@ -444,7 +444,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label class="form-label">{{ __('web.confirm_password') }}</label>
-                                    <input class="form-control @error('confirm_password') is-invalid @enderror"
+                                    <input class="form-control @error('password') is-invalid @enderror"
                                         autocomplete="new-password" type="password" name="confirm_password"
                                         value="{{ old('confirm_password') }}"
                                         placeholder="{{ __('web.confirm_password') }}" />
@@ -468,7 +468,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.country') }}</label>
-                                    <select class="form-control select2 @error('country_id') is-invalid @enderror"
+                                    <select class="form-control  @error('country_id') is-invalid @enderror"
                                         name="country_id">
                                         <option selected disabled>{{ __('web.country') }}</option>
                                         @isset($countries)
@@ -489,7 +489,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.state') }}</label>
-                                    <select class="form-control select2 @error('state') is-invalid @enderror"
+                                    <select class="form-control  @error('state_id') is-invalid @enderror"
                                         name="state_id">
                                         <option selected disabled>{{ __('web.state') }}</option>
                                     </select>
@@ -502,8 +502,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.city') }}</label>
-                                    <select class="form-control select2 @error('city_id') is-invalid @enderror"
-                                        name="city_id">
+                                    <select class="form-control  @error('city_id') is-invalid @enderror" name="city_id">
                                         <option selected disabled>{{ __('web.city') }}</option>
                                     </select>
                                     @error('city_id')
@@ -526,7 +525,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.type_account') }}</label>
-                                    <select class="form-control select2 @error('type_account') is-invalid @enderror"
+                                    <select class="form-control  @error('type_account') is-invalid @enderror"
                                         name="type_account">
                                         <option selected disabled>{{ __('web.type_account') }}</option>
                                         <option value="imported">imported</option>
@@ -541,8 +540,7 @@
                             <div class="col-12 col-lg-6 col-md-6 col-xl-6">
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.status') }}</label>
-                                    <select class="form-control select2 @error('status') is-invalid @enderror"
-                                        name="status">
+                                    <select class="form-control  @error('status') is-invalid @enderror" name="status">
                                         <option selected disabled>{{ __('web.status') }}</option>
                                         <option value="active">active</option>
                                         <option value="inactive">inactive</option>

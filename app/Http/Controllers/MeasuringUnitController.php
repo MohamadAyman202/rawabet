@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MeasuringUnitRequest;
 use App\Models\MeasuringUnit;
 use App\Services\SystemServices;
 use Illuminate\Http\Request;
@@ -35,13 +36,8 @@ class MeasuringUnitController extends Controller
      * Store a newly created resource in storage.
      * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(MeasuringUnitRequest $request)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-        ];
-        $this->validate($request, $roles);
         $data = $this->data($request);
         $data['slug'] = str()->slug($request->input('title_en'));
         return $this->systemServices->createSystem(MeasuringUnit::query(), $data, 'MeasuringUnits');
@@ -67,13 +63,9 @@ class MeasuringUnitController extends Controller
      * Update the specified resource in storage.
      * @throws ValidationException
      */
-    public function update(Request $request, $slug)
+    public function update(MeasuringUnitRequest $request, $slug)
     {
-        $roles = [
-            'title'             => ['required', 'string'],
-            'title_en'          => ['required', 'string'],
-        ];
-        $this->validate($request, $roles);
+
         $data = $this->data($request);
         return $this->systemServices->editSystem(MeasuringUnit::query(), $slug, $data, 'MeasuringUnits');
     }

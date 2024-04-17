@@ -10,6 +10,7 @@
                 <div class="col-md-6 col-lg-6 col-12">
                     <div class="card">
                         <div class="card-body p-5">
+                            @include('inc.message')
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="col-md-12">

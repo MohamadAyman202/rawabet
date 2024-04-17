@@ -96,6 +96,54 @@
     background-color: var(--main-title-color);
 }
 
+.notifications {
+    position: relative;
+}
+.notifications svg {
+    cursor: pointer;
+}
+
+.notifications .notifications-count {
+    position: absolute;
+    content: "";
+    left: 34%;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    font-size: 10px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.notifications .notifications-body {
+    position: absolute;
+    content: "";
+    top: 120%;
+    left: 0%;
+    width: 450px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.notifications .notifications-body::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: -10%;
+    border-top: 15px solid transparent;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid #fff;
+    cursor: pointer;
+}
+
+.notifications .notifications-body .content p {
+    overflow-wrap: anywhere;
+}
 /* End Footer */
 @media only screen and (max-width: 600px) {
     .box-slider {

@@ -15,31 +15,31 @@
                                     alt="">
                                 <div class="card-body">
                                     <h4 class="">
-                                        {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->title : __('web.title') . ' : ' . __('web.undefined') }}
+                                        {{ $product->title }}
                                     </h4>
                                     <div class="overflow-hidden" style="height: 150px">
                                         <p class="m-1">
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->meta_description : __('web.meta_description') . ' : ' . __('web.undefined') }}
+                                            {{ $product->meta_description }}
                                         </p>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center my-2">
                                         <p class="m-0">
                                             <strong>{{ __('web.price') }}: </strong>
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->price : __('web.undefined') }}
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->country->currency_symbol : '' }}
+                                            {{ $product->price }}
+                                            {{ $product->country->currency_symbol ?? '' }}
                                         </p>
                                         <p class="m-0">
                                             <strong>{{ __('web.offer') }}: </strong>
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->offers : __('web.undefined') }}
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->country->currency_symbol : '' }}
+                                            {{ $product->offers }}
+                                            {{ $product->country->currency_symbol ?? '' }}
                                         </p>
                                         <p class="m-0">
                                             <strong>{{ __('web.total') }}: </strong>
                                             @php
                                                 $total = $product->price - $product->offers;
                                             @endphp
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $total : __('web.undefined') }}
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->country->currency_symbol : '' }}
+                                            {{ $total }}
+                                            {{ $product->country->currency_symbol ?? '' }}
                                         </p>
                                     </div>
                                     <hr>
@@ -47,7 +47,7 @@
                                         <img src="{{ $product->user->photo ? asset($product->user->photo) : asset('frontend/assets/images/user.png') }}"
                                             width="40" alt="{{ $product->user->name }}">
                                         <h5 class="ms-2 mb-0">
-                                            {{ $check_subscription == 'working' || ($product->user->id == $user->id && $check_subscription != 'working') ? $product->user->name : __('web.undefined') }}
+                                            {{ $product->user->name }}
                                         </h5>
                                     </div>
                                 </div>

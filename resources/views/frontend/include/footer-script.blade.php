@@ -17,3 +17,7 @@
 </script>
 <script src="{{ URL::asset('frontend/assets/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+<script src="{{ asset('frontend/assets/aos-master/dist/aos.js') }}"></script>
+<script>
+    AOS.init();
+</script>

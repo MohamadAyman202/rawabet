@@ -25,6 +25,7 @@ class UserServiceProvider extends ServiceProvider
             'frontend.home', 'frontend.pages.product.details',
             'frontend.pages.product.index', 'frontend.include.header',
             'frontend.pages.profile.index', 'frontend.pages.product.all_products',
+            'frontend.pages.setting.index', 'frontend.pages.payment.checkout',
         ];
         View::composer($routes_paths, UserComposer::class);
     }

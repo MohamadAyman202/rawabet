@@ -34,23 +34,23 @@ function data() {
 
 // Start Logic Notifications Code (Reale Time)
 
-// setInterval(() => {
-$(function () {
-    $.ajax({
-        type: "GET",
-        url: `${window.location.origin}/notifications`,
-        success: function (response) {
-            var eleNotifications = $(
-                ".notifications .notifications-body .notifications-ele"
-            );
-            var count = response.count > 99 ? "99+" : response.count;
-            $(".notifications-count").html(count);
-            if (count > 0) {
-                eleNotifications.empty();
-                $.each(response.notifications, function (i, notification) {
-                    var ele = notification.data.data;
-                    eleNotifications.append(`
-                        <a class="nav-link bg-secondary-subtle d-flex" href="#">
+setInterval(() => {
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: `${window.location.origin}/notifications`,
+            success: function (response) {
+                var eleNotifications = $(
+                    ".notifications .notifications-body .notifications-ele"
+                );
+                var count = response.count > 99 ? "99+" : response.count;
+                $(".notifications-count").html(count);
+                if (count > 0) {
+                    eleNotifications.empty();
+                    $.each(response.notifications, function (i, notification) {
+                        var ele = notification.data.data;
+                        eleNotifications.append(`
+                        <a class="nav-link bg-secondary-subtle d-flex" href="${originLink}/readNotifications/${notification.id}">
                             <img src="${originLink}/${ele.photo}" width="125" height="75"/>
                             <div class="content ps-3">
                                 <h5 class="text-black mb-0">${ele.title[localization]}</h5>
@@ -58,16 +58,16 @@ $(function () {
                             </div>
                         </a>
                     `);
-                });
-            } else {
-                eleNotifications.append(
-                    `<p class="text-center p-5 m-5 fs-5 fw-bold">Not Found Notifications</p>`
-                );
-            }
-        },
+                    });
+                } else {
+                    eleNotifications.append(
+                        `<p class="text-center p-5 m-5 fs-5 fw-bold">Not Found Notifications</p>`
+                    );
+                }
+            },
+        });
     });
-});
-// }, 2000);
+}, 2000);
 
 $(".notifications").on("click", function () {
     $(".notifications-body").toggleClass("d-none");

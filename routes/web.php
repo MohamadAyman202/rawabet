@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -32,7 +33,7 @@ Route::group(
 
             Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('login');
             Route::match(['get', 'post'], 'register', [RegisterController::class, 'index'])->name('register');
-            Route::controller(RegisterController::class)->group(function () {
+            Route::controller(CountryController::class)->group(function () {
                 Route::get('customer/city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
                 Route::get('customer/state_data/{id}',  'state_data')->name('state_data');
             });
@@ -62,10 +63,12 @@ Route::group(
                 Route::delete('profile/products/destroy/{slug}', 'product_destroy')->name('product_destroy');
                 // End Route Products
 
-                Route::get('contactus', 'contactus')->name('contactus');
                 Route::get('profile', 'profile')->name('profile');
                 Route::get('invoices', 'invoice')->name('invoice');
                 Route::get('setting', 'setting')->name('web.setting');
+                Route::post('deleteAccount/{id}', 'delete_account')->name("delete.account");
+
+                Route::get("checkout/{subscription}", "checkout")->name("checkout");
             });
 
             Route::get('/get_data/{id}', [ProductController::class, 'get_sub_category'])->name('get_data');
@@ -75,8 +78,16 @@ Route::group(
             });
 
             // Get Data API
-
             Route::get('notifications', NotificationController::class)->name('notifications');
+            Route::get('readNotifications/{id}', [NotificationController::class, 'readyNotifications'])->name('readyNotifications');
+
+            // Delete Account Customer
         });
     }
 );
+
+
+
+Route::get('/pdf', function () {
+    return view('frontend.pdf');
+});

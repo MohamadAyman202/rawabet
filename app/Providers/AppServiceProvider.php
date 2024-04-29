@@ -14,10 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // App::booted(function () {
-        //     $title = Setting::query()->value('title');
-        //     config(['app.name' => $title]);
-        // });
+        App::booted(function () {
+            $title = Setting::query()->value('title');
+            config(['app.name' => $title]);
+        });
     }
 
     /**

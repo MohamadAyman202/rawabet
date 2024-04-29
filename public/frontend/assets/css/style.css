@@ -144,6 +144,13 @@
 .notifications .notifications-body .content p {
     overflow-wrap: anywhere;
 }
+
+.checkout {
+    height: calc(100vh - 316px) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* End Footer */
 @media only screen and (max-width: 600px) {
     .box-slider {

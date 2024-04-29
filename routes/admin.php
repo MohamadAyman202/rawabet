@@ -52,11 +52,13 @@ Route::group(
                     'slider'            => SliderController::class,
                 ]);
 
+                Route::get('orders', [AdminController::class, 'orders'])->name('orders.index');
+
                 Route::get('/get_data/{id}', [ProductController::class, 'get_sub_category'])->name('get_data');
 
                 Route::controller(CustomerController::class)->group(function () {
-                    Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
                     Route::get('state_data/{id}',  'state_data')->name('state_data');
+                    Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
                 });
 
                 Route::controller(SettingController::class)->group(function () {

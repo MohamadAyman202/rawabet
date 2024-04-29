@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="{{ URL::asset('frontend/assets/css/style.css') }}">
 @endsection
 @section('content')
+    @php
+        $position_one = app()->getLocale() == 'en' ? 'fade-left' : 'fade-right';
+        $position_two = app()->getLocale() == 'en' ? 'fade-right' : 'fade-left';
+    @endphp
     <!-- Start Slider -->
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner my-slider">
@@ -53,19 +57,21 @@
 
             <div class="row">
 
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-12 col-md-12" data-aos="fade-left">
                     <div class="d-flex justify-content-center align-items-center main-head">
                         <h1 class="fs-1 py-3 main-header">{{ __('web.about') }}</h1>
                     </div>
                 </div>
                 <div class="py-5">
                     <div class="row">
-                        <div class="col-12 col-lg-6 col-md-6 col-xl-6">
+                        <div class="col-12 col-lg-6 col-md-6 col-xl-6" data-aos="{{ $position_two }}" data-aos-offset="300"
+                            data-aos-easing="ease-in-sine">
                             <h2 class="fs-1">{{ __('web.welcome') }}</h2>
                             <p class="fs-4">{{ __('web.company') }}</p>
                             <p class="fs-4">{{ __('web.versa') }}</p>
                         </div>
-                        <div class="col-12 col-lg-6 col-md-6 col-xl-6">
+                        <div class="col-12 col-lg-6 col-md-6 col-xl-6" data-aos="{{ $position_one }}" data-aos-offset="300"
+                            data-aos-easing="ease-in-sine">
                             <div class="main-img">
                                 <img class="w-100 " src="{{ asset('assets/images/86528626.cms') }}" alt="">
                             </div>
@@ -81,7 +87,7 @@
     <section class="support">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-12 col-md-12" data-aos="fade-right">
                     <div class="d-flex justify-content-center align-items-center main-head">
                         <h1 class="fs-1 py-3 main-header">{{ __('web.services') }}</h1>
                     </div>
@@ -89,7 +95,8 @@
                 <div class="py-5">
                     <div class="row">
 
-                        <div class="col-12 col-lg-4 col-md-6 col-xl-4">
+                        <div class="col-12 col-lg-4 col-md-6 col-xl-4" data-aos="{{ $position_two }}" data-aos-offset="300"
+                            data-aos-easing="ease-in-sine">
                             <div class="card">
                                 <img class="card-img-top"
                                     src="{{ asset('assets/images/istockphoto-1304746031-612x612.jpg') }}"width="354"
@@ -103,7 +110,8 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4 col-md-6 col-xl-4">
+                        <div class="col-12 col-lg-4 col-md-6 col-xl-4" data-aos="fade-up" data-aos-offset="300"
+                            data-aos-easing="ease-in-sine">
                             <div class="card">
                                 <img class="card-img-top" src="{{ asset('assets/images/export-credit-sheet.jpg') }}"
                                     width="354" height="226" alt="">
@@ -116,7 +124,8 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4 col-md-6 col-xl-4">
+                        <div class="col-12 col-lg-4 col-md-6 col-xl-4" data-aos="{{ $position_one }}" data-aos-offset="300"
+                            data-aos-easing="ease-in-sine">
                             <div class="card">
                                 <img class="card-img-top" src="{{ asset('assets/images/support.jpg') }}" width="354"
                                     height="226" alt="">
@@ -137,7 +146,45 @@
     </section>
     <!-- End Services -->
     <!-- Start Subscription -->
-    @include('frontend.include.subscription')
+    <section class="subscription">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12" data-aos="fade-down">
+                    <div class="d-flex justify-content-center align-items-center main-head">
+                        <h1 class="fs-1 py-3 main-header">{{ __('web.subscriptions') }}</h1>
+                    </div>
+                </div>
+                <div class="py-5">
+                    <div class="row">
+                        @forelse ($data['subscription'] as $subscription)
+                            <div class="col-12 col-lg-4 col-md-6 col-xl-4">
+                                <div class="card">
+                                    <img class="card-img-top" src="{{ asset($subscription->photo) }}"width="354"
+                                        height="226" alt="">
+                                    <div class="card-body">
+                                        <div class="p-3">
+                                            {!! $subscription->description !!}
+                                        </div>
+
+                                        <div class="text-center">
+                                            <form action="{{ route('checkout', $subscription->all()) }}" method="get">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-md w-100 btn-block fs-5">{{ __('web.subscription') }}</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-center">Not Found Subscription Now Please Try Again!</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- End Subscription -->
     <!-- Start Contact Us -->
     @include('frontend.include.contact')

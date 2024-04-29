@@ -212,7 +212,7 @@
                                                                     <div class="mt-3">
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.country') }}</label>
-                                                                        <select
+                                                                        <select onchange="proccessData(this.value)"
                                                                             class="form-control  @error('country_id') is-invalid @enderror"
                                                                             name="country_id">
                                                                             </option>
@@ -456,7 +456,7 @@
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.country') }}</label>
                                     <select class="form-control  @error('country_id') is-invalid @enderror"
-                                        name="country_id">
+                                        name="country_id" onchange="proccessData(this.value)">
                                         @isset($countries)
                                             @foreach ($countries as $country)
                                                 <option value="{{ $country->id }}">
@@ -577,53 +577,40 @@
     <script type="text/javascript">
         $(function() {
             proccessData();
-            $("select[name='country_id']").on("change", function() {
-                proccessData();
-            });
         });
 
-        function proccessData() {
-            const country_id = $("select[name='country_id']").val();
+        function proccessData(country_id) {
+
             const state = $("select[name='state_id']");
-            if (country_id) {
-                $.ajax({
-                    type: "GET",
-                    url: `${window.location.origin}/admin/state_data/${country_id}`,
-                    success: function(response) {
-                        state.children().remove();
+            $.ajax({
+                type: "GET",
+                url: `${window.location.origin}/admin/state_data/${country_id}`,
+                success: function(response) {
+                    state.children().remove();
+                    $.each(response.data, function(i, ele) {
                         state.append(`
-                    <option selected disabled>{!! __('web.state') !!}</option>
+                    <option value="${ele.id}">${ele.name}</option>
                 `);
-                        console.log(window.location.origin);
-                        $.each(response.data, function(i, ele) {
-                            state.append(`
-                        <option value="${ele.id}">${ele.name}</option>
-                    `);
-                        });
+                    });
 
-                        state.on("change", function() {
-                            const state_id = $(this).val();
-                            const city = $("select[name='city_id']");
-                            $.ajax({
-                                type: "GET",
-                                url: `${window.location.origin}/admin/city_data/${country_id}/${state_id}`,
-                                success: function(response) {
-                                    city.children().remove();
+                    state.on("change", function() {
+                        const state_id = $(this).val();
+                        const city = $("select[name='city_id']");
+                        $.ajax({
+                            type: "GET",
+                            url: `${window.location.origin}/admin/city_data/${country_id}/${state_id}`,
+                            success: function(response) {
+                                city.children().remove();
+                                $.each(response.data, function(i, ele) {
                                     city.append(`
-                                <option selected disabled>{!! __('web.city') !!}</option>
+                                <option value="${ele.id}">${ele.name}</option>
                             `);
-
-                                    $.each(response.data, function(i, ele) {
-                                        city.append(`
-                                    <option value="${ele.id}">${ele.name}</option>
-                                `);
-                                    });
-                                },
-                            });
+                                });
+                            },
                         });
-                    },
-                });
-            }
+                    });
+                },
+            });
         }
     </script>
 @endsection

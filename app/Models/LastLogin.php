@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Trait\FunctionsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LastLogin extends Model
 {
-    use HasFactory;
+    use HasFactory, FunctionsTrait;
     protected $guarded = [];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -18,5 +19,10 @@ class LastLogin extends Model
     public function admin(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Admin::class);
+    }
+
+    public function Fun($data)
+    {
+        return self::FormatDate($data);
     }
 }

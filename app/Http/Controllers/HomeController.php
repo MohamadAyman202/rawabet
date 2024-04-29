@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\ContactUs;
+use App\Models\Country;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Slider;
@@ -74,13 +75,9 @@ class HomeController extends Controller
 
     public function data(): array
     {
-        $data['slider'] = Cache::remember('slider', 1440, function () {
-            return Slider::query()->where('status', 'active')->orderBy('created_at', 'DESC')->get();
-        });
+        $data['slider'] = Slider::query()->where('status', 'active')->orderBy('created_at', 'DESC')->get();
 
-        $data['subscription'] = Cache::remember('subscription', 1440, function () {
-            return Subscription::query()->where('status', 'active')->get();
-        });
+        $data['subscription'] = Subscription::query()->where('status', 'active')->get();
 
         return $data;
     }
@@ -181,13 +178,34 @@ class HomeController extends Controller
 
     public function invoice()
     {
-        $orders = auth()->user()
-            ->with(['transactions', 'orders'])->first();
+        $orders = Auth::user()->load('orders');
         return view('frontend.pages.invoice.index', compact('orders'));
     }
 
-    public function setting() {
-        return view('frontend.pages.profile.edit');
+    public function setting()
+    {
+        $countries = Cache::rememberForever('countries', function () {
+            return Country::query()->orderBy('created_at', 'DESC')->get();
+        });
+        $lastLogin = Auth::user()->load(['last_logins' => function ($query) {
+            $query->orderBy('created_at', 'desc')->limit(5);
+        }]);
+        return view('frontend.pages.setting.index', compact('countries', 'lastLogin'));
+    }
+
+    public function delete_account($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user) {
+            $user->delete();
+        }
+        return redirect()->back()->with('error', 'Not Found Account Please Try Again!');
+    }
+
+    public function checkout($subscription)
+    {
+        $subscription = Subscription::findOrFail($subscription);
+        return view('frontend.pages.payment.checkout', compact('subscription'));
     }
 
     public function data_products($request): array

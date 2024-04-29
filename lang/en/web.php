@@ -119,7 +119,7 @@ return [
     'CardNumber'                => 'Card Number',
     'PaymentGateway'            => 'Payment Gateway',
     'work_status' => 'Work Status',
-    '' => '',
+    'logout' => 'logout',
     '' => '',
     '' => '',
     '' => '',

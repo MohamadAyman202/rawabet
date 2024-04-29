@@ -65,16 +65,4 @@ class RegisterController extends Controller
         $data['password'] = Hash::make($request->input('password'));
         return $data;
     }
-    public function state_data($id)
-    {
-        $country = Country::query()->findOrFail($id)->states;
-        return response()->json(['data' => $country, 'status' => 200, 'msg' => 'Successfully Get State']);
-    }
-
-    public function city_data($country_id, $state_id)
-    {
-        $city = Country::query()->findOrFail($country_id)
-            ->states->where('id', $state_id)->first()->cities;
-        return response()->json(['data' => $city, 'status' => 200, 'msg' => 'Successfully Get Cities']);
-    }
 }

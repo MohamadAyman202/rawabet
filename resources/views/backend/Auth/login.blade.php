@@ -8,6 +8,9 @@
     Login
 @stop
 @section('content')
+    @php
+        $setting = App\Models\Setting::query()->value('favicon');
+    @endphp
     <div class="container-fluid">
         <div class="row no-gutter justify-content-center">
             <!-- The content half -->
@@ -18,19 +21,19 @@
                         <div class="row">
                             <div class="col-md-10 col-lg-10 col-xl-9 mx-auto bg-white p-5">
                                 <div class="card-sigin">
-                                    <div class="mb-5 d-flex"> <a href="{{ url('/' . ($page = 'index')) }}"><img
-                                                src="{{ URL::asset('backend/assets/img/brand/favicon.png') }}"
-                                                class="sign-favicon ht-40" alt="logo"></a>
-                                        <h1 class="main-logo1 ml-1 mr-0 my-auto tx-28">Va<span>le</span>x</h1>
+                                    <div class="mb-3 d-flex"> <a href="{{ url('/' . ($page = 'index')) }}"><img
+                                                src="{{ URL::asset($setting) }}" class="sign-favicon ht-60"
+                                                alt="logo"></a>
                                     </div>
                                     <div class="card-sigin">
                                         <div class="main-signup-header">
                                             <h2>Welcome back!</h2>
                                             <h5 class="font-weight-semibold mb-4">Please sign in to continue.</h5>
-                                            @if(Session::has('error'))
+                                            @if (Session::has('error'))
                                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                                     <strong>Error!</strong> {{ Session::get('error') }}
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>

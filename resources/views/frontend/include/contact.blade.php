@@ -1,12 +1,12 @@
 <section class="contact">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 col-md-12">
+            <div class="col-lg-12 col-md-12" data-aos="fade-up">
                 <div class="d-flex justify-content-center align-items-center main-head">
                     <h1 class="fs-1 py-3 main-header">{{ __('web.contact') }}</h1>
                 </div>
             </div>
-            <div class="py-5">
+            <div class="py-5" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine">
                 @include('inc.message')
                 <div class="card">
                     <div class="card-body">

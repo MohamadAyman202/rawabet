@@ -43,7 +43,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function last_login(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function last_logins(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(LastLogin::class);
     }

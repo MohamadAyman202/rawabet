@@ -46,10 +46,6 @@
                             href="{{ route('subscriptions') }}">{{ __('web.subscriptions') }}</a>
                     </li>
                 @endguest
-
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ route('contactus') }}">{{ __('web.contact') }}</a>
-                </li>
                 @auth
                     <li class="nav-item d-flex justify-content-center align-items-center notifications">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white"

@@ -27,7 +27,7 @@ class SettingController extends Controller
 
             $data = $this->data($request);
 
-            if ($request->file('logo')) {
+            if ($request->hasFile('logo')) {
                 if ($setting->logo) {
                     unlink($setting->logo);
                 }
@@ -36,16 +36,16 @@ class SettingController extends Controller
                 $request->file('logo')->move(public_path("uploads/setting/"), $logo);
             }
 
-            if ($request->file('favicon')) {
+            if ($request->hasFile('favicon')) {
                 if ($setting->favicon) {
                     unlink($setting->favicon);
                 }
-                $favicon = time() . '.' . $request->file('favicon')->extension();
+                $favicon = time() . time() . '.' . $request->file('favicon')->extension();
                 $data['favicon'] = "uploads/setting/$favicon";
                 $request->file('favicon')->move(public_path("uploads/setting/"), $favicon);
             }
 
-            $status = $setting->fill($data)->save();
+            $status = $setting->update($data);
 
             if ($status) {
                 session()->flash('success', "Successfully Updated Settin!");

@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Services\FatoorahServices;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -20,37 +22,55 @@ class PaymentController extends Controller
     }
     public function payment(Request $request)
     {
-        $pay_subscription = json_decode($request['pay_subscription']);
-        $user = json_decode($request['user']);
+        try {
+            $codePhone = substr($request->phone, 0, 3);
+            $phonenumber = substr($request->phone, 3);
+            $data = [
+                'CustomerName'          => $request->name,
+                'NotificationOption'    => 'LNK',
+                'InvoiceValue'          => $request->price,
+                'CustomerEmail'         => $request->email,
+                'CallBackUrl'           => env('SUCCESS_PAY_URL', route('success_pay')),
+                'ErrorUrl'              => env('SUCCESS_PAY_URL', route('success_pay')),
+                'Language'              => app()->getLocale(),
+                'DisplayCurrencyIso'    => 'EGP',
+                'MobileCountryCode'     => $codePhone,
+                'CustomerMobile'        => $phonenumber
+            ];
 
-        $data = [
-            'CustomerName'          => $user->name,
-            'NotificationOption'    => 'LNK',
-            'InvoiceValue'          => $pay_subscription->price,
-            'CustomerEmail'         => $user->email,
-            'CallBackUrl'           => env('SUCCESS_PAY_URL', route('success_pay')),
-            'ErrorUrl'              => env('SUCCESS_PAY_URL', route('success_pay')),
-            'Language'              => app()->getLocale(),
-            'DisplayCurrencyIso'    => 'EGP',
-            'MobileCountryCode'     => '+20',
-            'CustomerMobile'        => '1007363331'
-        ];
+            $pay_subscription = $request['pay_subscription'];
 
+            $status = $this->fatoorahService->sendPayment($data);
+            $response  = new Response();
+            $response->cookie('user_id', $request->customer);
+            $response->cookie('subscription_id', $request->subscription);
+            $response->cookie('name', $request->name);
+            $response->cookie('price', $request->price);
+            $response->cookie('email', $request->email);
+            $response->cookie('phone', $request->phone);
+            $response->cookie('pay_subscription', $pay_subscription);
 
-        $status = $this->fatoorahService->sendPayment($data);
-        return $this->proccessPayment($status, $user->id, $pay_subscription);
+            foreach ($response->headers->getCookies() as $cookie) {
+                header('Set-Cookie: ' . $cookie, false);
+            }
+            return $this->proccessPayment($status, $request->customer, $pay_subscription);
+        } catch (\Exception $ex) {
+            return redirect()->back()->withErrors(['error' => $ex->getMessage()]);
+        }
     }
 
     private function proccessPayment($status, string $user_id, $pay_subscription)
     {
         if ($status) {
-            $data = $status['Data'];
+            $data = $status;
             $status_success = Transaction::query()->create([
-                'InvoiceId' => $data['InvoiceId'],
-                'user_id' => $user_id,
-                'subscription_id' => $pay_subscription->id,
-                'end_date'  => Date::now()->addDays($pay_subscription->count_day),
-                'InvoiceURL' => $data['InvoiceURL']
+                'InvoiceId' => $data['Data']['InvoiceId'],
+                'InvoiceURL' => $data['Data']['InvoiceURL'],
+                'CustomerReference' => $data['Data']['CustomerReference'],
+                'UserDefinedField' => $data['Data']['UserDefinedField'],
+                'Message' => $data['Message'],
+                'ValidationErrors' => $data['ValidationErrors'],
+                'IsSuccess' => $data['IsSuccess'],
             ]);
 
             if ($status_success) return redirect($status_success->InvoiceURL);
@@ -69,6 +89,8 @@ class PaymentController extends Controller
 
     public function order($data)
     {
+        $pay_subscription = json_decode($_COOKIE['pay_subscription']);
+        $user_id = $_COOKIE['user_id'];
         $all_data = $data;
         $data = $data['Data'];
         $invoiceTransactions = $data['InvoiceTransactions'][0];
@@ -93,22 +115,18 @@ class PaymentController extends Controller
             'CardNumber' => $invoiceTransactions['CardNumber'],
             'Error' => $invoiceTransactions['Error'],
             'ErrorCode' => $invoiceTransactions['ErrorCode'],
+            'end_date' => Date::now()->addDays($pay_subscription->count_day),
+            'subscription_id'   => $pay_subscription->id,
+            'user_id' => $user_id,
         ]);
-        $transaction = Transaction::query()->where('InvoiceId', $status->InvoiceId)->first();
+
 
         if ($status) {
+
             !is_null($status->ErrorCode) && !is_null($status->Error) ? $status_work = 'error' : $status_work = 'working';
             $status->update([
-                'end_date' => $transaction->end_date,
-                'transaction_id' => $transaction->id,
-                'subscription_id'   => $transaction->subscription_id,
-                'user_id' => $transaction->user_id,
                 'status_work' => $status_work,
             ]);
-
-            if ($transaction) {
-                $transaction->update(['status' => '1']);
-            }
 
             return to_route('home');
         };

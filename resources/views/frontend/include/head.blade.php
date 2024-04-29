@@ -26,3 +26,4 @@
 <link href="{{ asset('backend/froala_editor_4.1.4/css/froala_editor.pkgd.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('backend/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('frontend/assets/bootstrap/dist/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('frontend/assets/aos-master/dist/aos.css') }}">

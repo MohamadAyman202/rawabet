@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('InvoiceId')->unique();
-            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('InvoiceURL');
-            $table->foreignId('subscription_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status', ['0', '1'])->default(0);
-            $table->dateTime('end_date');
+            $table->string('CustomerReference')->nullable();
+            $table->string('UserDefinedField')->nullable();
+            $table->string('Message')->nullable();
+            $table->string('ValidationErrors')->nullable();
+            $table->string('IsSuccess')->nullable();
             $table->timestamps();
         });
     }

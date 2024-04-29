@@ -140,7 +140,9 @@ class CustomerController extends Controller
         $data = $request->except('_token', 'type_account', 'photo', 'confirm_password');
         $data['role_name'] = $request->input('type_account');
         $data['admin_id'] = auth()->user()->id;
-        $data['password'] = Hash::make($request->input('password'));
+        if (!is_null($request->input('password'))) {
+            $data['password'] = Hash::make($request->input('password'));
+        }
         return $data;
     }
 

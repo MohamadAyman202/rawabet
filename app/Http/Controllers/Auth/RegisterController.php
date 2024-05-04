@@ -59,7 +59,7 @@ class RegisterController extends Controller
 
     public function data($request = null): array
     {
-        $data = $request->except('_token', 'type_account', 'photo', 'password_confirmation');
+        $data = $request->except('_token', 'type_account', 'photo', 'password_confirmation', 'password');
         $data['role_name'] = $request->input('type_account');
         // $data['admin_id'] = auth()->user()->id;
         $data['password'] = Hash::make($request->input('password'));

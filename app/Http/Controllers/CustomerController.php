@@ -137,7 +137,7 @@ class CustomerController extends Controller
 
     public function data($request = null): array
     {
-        $data = $request->except('_token', 'type_account', 'photo', 'confirm_password');
+        $data = $request->except('_token', 'type_account', 'photo', 'confirm_password', 'password');
         $data['role_name'] = $request->input('type_account');
         $data['admin_id'] = auth()->user()->id;
         if (!is_null($request->input('password'))) {
@@ -146,16 +146,4 @@ class CustomerController extends Controller
         return $data;
     }
 
-    public function state_data($id)
-    {
-        $country = Country::query()->findOrFail($id)->states;
-        return response()->json(['data' => $country, 'status' => 200, 'msg' => 'Successfully Get State']);
-    }
-
-    public function city_data($country_id, $state_id)
-    {
-        $city = Country::query()->findOrFail($country_id)
-            ->states->where('id', $state_id)->first()->cities;
-        return response()->json(['data' => $city, 'status' => 200, 'msg' => 'Successfully Get Cities']);
-    }
 }

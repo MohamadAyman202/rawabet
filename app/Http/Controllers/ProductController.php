@@ -28,7 +28,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return User::find(954)->unreadNotifications;
         $products = Product::query()->paginate(self::count_data());
         return view('backend.pages.products.index', compact('products'));
     }

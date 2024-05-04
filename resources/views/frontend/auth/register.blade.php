@@ -173,11 +173,10 @@
             if (country_id) {
                 $.ajax({
                     type: "GET",
-                    url: `${window.location.origin}/customer/state_data/${country_id}`,
+                    url: `${window.location.origin}/api/state_data/${country_id}`,
                     success: function(response) {
                         state.children().remove();
                         state.append(`
-                <option selected disabled>{!! __('web.state') !!}</option>
             `);
                         console.log(window.location.origin);
                         $.each(response.data, function(i, ele) {
@@ -191,11 +190,10 @@
                             const city = $("select[name='city_id']");
                             $.ajax({
                                 type: "GET",
-                                url: `${window.location.origin}/customer/city_data/${country_id}/${state_id}`,
+                                url: `${window.location.origin}/api/city_data/${country_id}/${state_id}`,
                                 success: function(response) {
                                     city.children().remove();
                                     city.append(`
-                            <option selected disabled>{!! __('web.city') !!}</option>
                         `);
 
                                     $.each(response.data, function(i, ele) {

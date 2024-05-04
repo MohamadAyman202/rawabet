@@ -30,7 +30,7 @@ class UpdateAdminRequest extends FormRequest
             'state_id'      => 'required',
             'city_id'       => 'required',
             'address'       => 'required',
-            'type_account'  => 'required',
+            'roles'  => 'required',
         ];
     }
 
@@ -40,7 +40,6 @@ class UpdateAdminRequest extends FormRequest
             'country_id'    => 'Country',
             'state_id'      => 'state',
             'city_id'       => 'city',
-            'type_account'  => 'type account',
         ];
     }
 }

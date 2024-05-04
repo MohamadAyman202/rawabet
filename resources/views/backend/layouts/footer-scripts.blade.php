@@ -68,3 +68,6 @@
 <script type="text/javascript" src="{{ asset('backend/assets/js/main.js') }}"></script>
 
 <script src="{{ asset('assets/js/script.js') }}"></script>
+
+
+<script src="{{ asset('assets/js/adminScript.js') }}"></script>

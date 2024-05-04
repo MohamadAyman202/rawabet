@@ -33,10 +33,6 @@ Route::group(
 
             Route::match(['get', 'post'], 'login', [LoginController::class, 'login'])->name('login');
             Route::match(['get', 'post'], 'register', [RegisterController::class, 'index'])->name('register');
-            Route::controller(CountryController::class)->group(function () {
-                Route::get('customer/city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
-                Route::get('customer/state_data/{id}',  'state_data')->name('state_data');
-            });
 
             Route::controller(HomeController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -72,10 +68,6 @@ Route::group(
             });
 
             Route::get('/get_data/{id}', [ProductController::class, 'get_sub_category'])->name('get_data');
-            Route::controller(CustomerController::class)->group(function () {
-                Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
-                Route::get('state_data/{id}',  'state_data')->name('state_data');
-            });
 
             // Get Data API
             Route::get('notifications', NotificationController::class)->name('notifications');

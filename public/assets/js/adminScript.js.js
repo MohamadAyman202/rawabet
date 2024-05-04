@@ -1,4 +1,6 @@
 // Function to handle state change
+console.log(stateId);
+console.log(cityId);
 function stateChangeHandler(country_id, state_id) {
     const city = $("select[name='city_id']");
     $.ajax({
@@ -10,7 +12,7 @@ function stateChangeHandler(country_id, state_id) {
             $.each(response.data, function (i, ele) {
                 city.append(`
                     <option ${
-                        cityId != null && cityId == ele.id ? "selected" : ""
+                        stateId != null && stateId == ele.id ? "selected" : ""
                     } value="${ele.id}">${ele.name}</option>
                 `);
             });
@@ -30,7 +32,7 @@ function getStatesByCountry(country_id) {
             $.each(response.data, function (i, ele) {
                 state.append(`
                     <option ${
-                        stateId != null && stateId == ele.id ? "selected" : ""
+                        cityId != null && cityId == ele.id ? "selected" : ""
                     } value="${ele.id}">${ele.name}</option>
                 `);
             });

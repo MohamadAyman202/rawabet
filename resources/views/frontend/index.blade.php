@@ -167,7 +167,7 @@
                                         </div>
 
                                         <div class="text-center">
-                                            <form action="{{ route('checkout', $subscription->all()) }}" method="get">
+                                            <form action="{{ route('checkout', $subscription) }}" method="get">
                                                 @csrf
                                                 <button type="submit"
                                                     class="btn btn-primary btn-md w-100 btn-block fs-5">{{ __('web.subscription') }}</button>

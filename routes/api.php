@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,9 @@ Route::controller(PaymentController::class)->group(function () {
     Route::post('pay', 'payment')->name('pay');
     Route::get('success_pay', 'payment_callback')->name('success_pay');
     // Route::get('error_pay', 'error_payment')->name('error_pay');
+});
+
+Route::controller(CountryController::class)->group(function () {
+    Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
+    Route::get('state_data/{id}',  'state_data')->name('state_data');
 });

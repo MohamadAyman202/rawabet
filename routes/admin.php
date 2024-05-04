@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\backend\AdminController;
 use App\Http\Controllers\backend\Auth\LoginController;
 use App\Http\Controllers\backend\DashboardController;
@@ -56,10 +57,6 @@ Route::group(
 
                 Route::get('/get_data/{id}', [ProductController::class, 'get_sub_category'])->name('get_data');
 
-                Route::controller(CustomerController::class)->group(function () {
-                    Route::get('state_data/{id}',  'state_data')->name('state_data');
-                    Route::get('city_data/{country_id}/{state_id}', 'city_data')->name('city_data');
-                });
 
                 Route::controller(SettingController::class)->group(function () {
                     Route::get('setting',  'index')->name('setting.index');

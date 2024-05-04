@@ -23,7 +23,7 @@ class AdminController extends Controller
         $countries = Cache::rememberForever('countries', function () {
             return Country::query()->orderBy('created_at', 'DESC')->get();
         });
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::pluck('name', 'name')->all();
         return view('backend.pages.admin.index', compact('admins', 'countries', 'roles'));
     }
 
@@ -31,6 +31,7 @@ class AdminController extends Controller
     {
         try {
             $data = $this->data($request);
+            $data['password'] = bcrypt($request->input('password'));
 
             if ($request->hasFile('photo')) {
                 $image_name = time() . '.' . $request->file('photo')->extension();
@@ -41,7 +42,7 @@ class AdminController extends Controller
 
             $status->assignRole($request->input('roles'));
             if ($status) {
-                if($request->hasFile('photo')) {
+                if ($request->hasFile('photo')) {
                     $request->file('photo')->move(public_path("uploads/admin/"), $image_name);
                 }
                 session()->flash('success', "Successfully Created Admin");
@@ -62,6 +63,8 @@ class AdminController extends Controller
 
                 $data = $this->data($request);
 
+                if (!is_null($request->password)) $data['password'] = bcrypt($request->input('password'));
+
                 if ($request->hasFile('photo')) {
                     $image_name = time() . '.' . $request->file('photo')->extension();
                     $data['photo'] = "uploads/admin/$image_name";
@@ -70,9 +73,9 @@ class AdminController extends Controller
                 $status = $admin->update($data);
 
                 if ($status) {
-                    DB::table('model_has_roles')->where('model_id',$id)->delete();
+                    DB::table('model_has_roles')->where('model_id', $id)->delete();
                     $admin->assignRole($request->input('roles'));
-                    if($request->hasFile('photo')) {
+                    if ($request->hasFile('photo')) {
                         $request->file('photo')->move(public_path("uploads/admin/"), $image_name);
                     }
                     session()->flash('success', "Successfully Updated Admin");
@@ -88,7 +91,8 @@ class AdminController extends Controller
         }
     }
 
-    public function destroy(string $id)  {
+    public function destroy(string $id)
+    {
         try {
             $admin = Admin::query()->findOrFail($id);
 
@@ -115,10 +119,8 @@ class AdminController extends Controller
 
     public function data($request = null): array
     {
-        $data = $request->except('_token', 'photo', 'confirm_password', 'roles');
-        $data['role_name'] = $request->input('roles')[0] ;
-        $data['password'] = Hash::make($request->input('password'));
+        $data = $request->except('_token', 'photo', 'confirm_password', 'roles', 'password');
+        $data['role_name'] = $request->input('roles')[0];
         return $data;
     }
-
 }

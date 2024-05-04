@@ -89,7 +89,7 @@
                                                         class="form-label">{{ __('web.country') }}</label>
                                                     <select
                                                         class="form-control select2 @error('country_id') is-invalid @enderror"
-                                                        name="country_id" onchange="proccessData(this.value)">
+                                                        name="country_id" id="country_id">
                                                         <option selected disabled>{{ __('web.country') }}</option>
                                                         @isset($countries)
                                                             @foreach ($countries as $country)
@@ -152,13 +152,8 @@
                                                 <div class="mt-3">
                                                     <label for=""
                                                         class="form-label">{{ __('web.type_account') }}</label>
-                                                    <select
-                                                        class="form-control select2 @error('type_account') is-invalid @enderror"
-                                                        name="type_account">
-                                                        <option selected disabled>{{ __('web.type_account') }}</option>
-                                                        <option value="imported">imported</option>
-                                                        <option value="exporter">exporter</option>
-                                                    </select>
+                                                    <input type="text" value="{{ $user->role_name }}" disabled
+                                                        class="form-control">
                                                     @error('type_account')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
@@ -250,47 +245,12 @@
             var button = $(event.relatedTarget);
             var modal = $(this);
             // Use above variables to manipulate the DOM
-
         });
     </script>
 @endsection
 @section('js')
     <script>
-        $(function() {
-            proccessData();
-        });
-
-        function proccessData(country_id) {
-            const state = $("select[name='state_id']");
-            $.ajax({
-                type: "GET",
-                url: `${window.location.origin}/state_data/${country_id}`,
-                success: function(response) {
-                    state.children().remove();
-                    $.each(response.data, function(i, ele) {
-                        state.append(`
-            <option value="${ele.id}">${ele.name}</option>
-        `);
-                    });
-
-                    state.on("change", function() {
-                        const state_id = $(this).val();
-                        const city = $("select[name='city_id']");
-                        $.ajax({
-                            type: "GET",
-                            url: `${window.location.origin}/city_data/${country_id}/${state_id}`,
-                            success: function(response) {
-                                city.children().remove();
-                                $.each(response.data, function(i, ele) {
-                                    city.append(`
-                        <option value="${ele.id}">${ele.name}</option>
-                    `);
-                                });
-                            },
-                        });
-                    });
-                },
-            });
-        }
+        var stateId = "{!! $user->state_id !!}";
+        var cityId = "{!! $user->city_id !!}";
     </script>
 @endsection

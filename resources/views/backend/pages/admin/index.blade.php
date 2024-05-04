@@ -212,7 +212,7 @@
                                                                     <div class="mt-3">
                                                                         <label for=""
                                                                             class="form-label">{{ __('web.country') }}</label>
-                                                                        <select onchange="proccessData(this.value)"
+                                                                        <select
                                                                             class="form-control  @error('country_id') is-invalid @enderror"
                                                                             name="country_id">
                                                                             </option>
@@ -456,7 +456,7 @@
                                 <div class="mt-3">
                                     <label for="" class="form-label">{{ __('web.country') }}</label>
                                     <select class="form-control  @error('country_id') is-invalid @enderror"
-                                        name="country_id" onchange="proccessData(this.value)">
+                                        name="country_id">
                                         @isset($countries)
                                             @foreach ($countries as $country)
                                                 <option value="{{ $country->id }}">
@@ -574,43 +574,8 @@
     <script src="{{ URL::asset('backend/assets/js/modal.js') }}"></script>
 
     <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
-    <script type="text/javascript">
-        $(function() {
-            proccessData();
-        });
-
-        function proccessData(country_id) {
-
-            const state = $("select[name='state_id']");
-            $.ajax({
-                type: "GET",
-                url: `${window.location.origin}/admin/state_data/${country_id}`,
-                success: function(response) {
-                    state.children().remove();
-                    $.each(response.data, function(i, ele) {
-                        state.append(`
-                    <option value="${ele.id}">${ele.name}</option>
-                `);
-                    });
-
-                    state.on("change", function() {
-                        const state_id = $(this).val();
-                        const city = $("select[name='city_id']");
-                        $.ajax({
-                            type: "GET",
-                            url: `${window.location.origin}/admin/city_data/${country_id}/${state_id}`,
-                            success: function(response) {
-                                city.children().remove();
-                                $.each(response.data, function(i, ele) {
-                                    city.append(`
-                                <option value="${ele.id}">${ele.name}</option>
-                            `);
-                                });
-                            },
-                        });
-                    });
-                },
-            });
-        }
+    <script>
+        var stateId = "{!! Auth::guard('admin')->user()->state_id !!}";
+        var cityId = "{!! Auth::guard('admin')->user()->city_id !!}";
     </script>
 @endsection

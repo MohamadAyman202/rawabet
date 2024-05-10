@@ -91,7 +91,7 @@ return [
     'register'                  => 'Register',
     'home'                      => 'Home',
     'contact'                   => 'Contact us',
-    'about'                     => 'About us',
+    'chat'                      => 'Chat',
     'welcome'                   => 'Welcome To Links',
     'company'                   => 'We are a leading company in the field of import and export for more than 40 years. We have a number of branches in most countries of the world and we always strive for progress and sophistication in the global market.',
     'versa'                     => 'We connect the exporter to the importer and vice versa, where all work and services are exchanged from all parties. We have a team at all times to provide comfort to our customers.',

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->double('price');
             $table->text('quantity');
             $table->foreignId('category_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('sub_category_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('sub_category_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('measuring_unit_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId("admin_id")->nullable()->constrained()->onDelete('set null')->onUpdate('set null');
             $table->foreignId("user_id")->constrained()->cascadeOnDelete()->cascadeOnUpdate();

@@ -8,7 +8,7 @@
                 @forelse ($categories as $category)
                     <div class="col-12 col-lg-4 col-md-6 col-xl-4">
                         <a href="{{ route('sub_categories', $category->slug) }}" class="nav-link">
-                            <div class="card">
+                            <div class="card mb-4">
                                 <img class="card-img-top" src="{{ asset($category->photo) }}"width="354" height="226"
                                     alt="">
                                 <div class="card-body">

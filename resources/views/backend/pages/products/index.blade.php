@@ -102,7 +102,7 @@
                                                     href="#view_photo{{ $product->slug }}">{{ __('web.photo') }}</a>
                                             </td>
                                             <td>{{ $product->category->title }}</td>
-                                            <td>{{ $product->sub_category->title }}</td>
+                                            <td>{{ $product->sub_category?->title }}</td>
                                             <td>{{ $product->measuring_unit->title }}</td>
                                             <td>{{ app()->getLocale() == 'en' ? $product->country->name : $product->country->native }}
                                             </td>
@@ -191,6 +191,10 @@
                                 @endisset
                             </tbody>
                         </table>
+                        <div class="d-flex justify-content-end">
+
+                            {!! $products->links() !!}
+                        </div>
                     </div>
                 </div>
             </div>

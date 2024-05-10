@@ -17,7 +17,8 @@
                                     <h4 class="">
                                         {{ $product->title }}
                                     </h4>
-                                    <div class="overflow-hidden" style="height: 150px">
+                                    {{-- style="height: 150px" --}}
+                                    <div class="overflow-hidden">
                                         <p class="m-1">
                                             {{ $product->meta_description }}
                                         </p>

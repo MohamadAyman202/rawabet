@@ -43,5 +43,10 @@
     .select2 {
         width: 100% !important;
     }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0 !important;
+        margin-bottom: 10px;
+    }
 </style>
 @yield('css')

@@ -19,7 +19,8 @@
                         href="{{ route('index') }}">{{ __('web.home') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="#">{{ __('web.about') }}</a>
+                    <a class="nav-link text-light" href="{{ route('en/chatify') }}"
+                        target="_blank">{{ __('web.chat') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="{{ route('categories') }}">{{ __('web.category') }}</a>

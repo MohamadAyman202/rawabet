@@ -19,7 +19,7 @@
                                     </div>
                                     <div class="m-0 me-2">
                                         <strong>{{ __('web.sub_category') }}:</strong>
-                                        <span class="m-0 ms-1">{{ $product->sub_category->title }}</span>
+                                        <span class="m-0 ms-1">{{ $product->sub_category?->title }}</span>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center my-2">
